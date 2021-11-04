@@ -10,7 +10,7 @@ an executable
 
 -- general
 lvim.log.level = "warn"
-lvim.format_on_save = false
+lvim.format_on_save = true
 
 -- gruvbox colorscheme configuration
 vim.o.background = "dark"
@@ -166,7 +166,14 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- }
 lvim.plugins = {
   {"sainnhe/gruvbox-material"},
-  {"folke/tokyonight.nvim"}
+  {"folke/tokyonight.nvim"},
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "BufRead",
+    config = function()
+      require "lsp_signature".setup()
+    end
+  },
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
