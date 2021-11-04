@@ -12,7 +12,8 @@ an executable
 lvim.log.level = "warn"
 lvim.format_on_save = false
 
-vim.cmd("set background=dark")
+-- gruvbox colorscheme configuration
+vim.o.background = "dark"
 vim.g.gruvbox_material_transparent_background = 0
 vim.g.gruvbox_material_background = "soft" -- "medium" | "soft" | "hard"
 vim.g.gruvbox_material_palette = "original" -- "material" | "mix" | "original"
@@ -20,6 +21,14 @@ vim.g.gruvbox_material_statusline_style = "original" -- "default" | "mix" | "ori
 vim.g.gruvbox_material_enable_italic = 1
 vim.g.gruvbox_material_disable_italic_comment = 1
 lvim.colorscheme = "gruvbox-material"
+
+
+-- tokyonight colorscheme configuration
+--[[
+lvim.colorscheme = "tokyonight"
+vim.g.tokyonight_style = "day"
+vim.g.tokyonight_transparent = 1
+]]
 
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
@@ -156,7 +165,8 @@ lvim.builtin.treesitter.highlight.enabled = true
 --     },
 -- }
 lvim.plugins = {
-  {"sainnhe/gruvbox-material"}
+  {"sainnhe/gruvbox-material"},
+  {"folke/tokyonight.nvim"}
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
