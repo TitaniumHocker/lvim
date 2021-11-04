@@ -11,7 +11,16 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = false
+
+vim.cmd("set background=dark")
+vim.g.gruvbox_material_transparent_background = 0
+vim.g.gruvbox_material_background = "soft" -- "medium" | "soft" | "hard"
+vim.g.gruvbox_material_palette = "original" -- "material" | "mix" | "original"
+vim.g.gruvbox_material_statusline_style = "original" -- "default" | "mix" | "original"
+vim.g.gruvbox_material_enable_italic = 1
+vim.g.gruvbox_material_disable_italic_comment = 1
 lvim.colorscheme = "gruvbox-material"
+
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
