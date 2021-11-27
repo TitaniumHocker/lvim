@@ -12,6 +12,14 @@ an executable
 lvim.log.level = "warn"
 lvim.format_on_save = true
 
+-- GUI
+vim.o.guifont = "Fira Code:h12"
+-- vim.o.guifont = "Fira Code SemiBold:h12"
+vim.g.neovide_transparency=0.90
+vim.neovide_remember_window_size = true
+
+-- Theme configuration
+
 -- gruvbox colorscheme configuration
 vim.o.background = "dark"
 vim.g.gruvbox_material_transparent_background = 0
@@ -22,14 +30,13 @@ vim.g.gruvbox_material_enable_italic = 1
 vim.g.gruvbox_material_disable_italic_comment = 1
 lvim.colorscheme = "gruvbox-material"
 
-
 -- tokyonight colorscheme configuration
 --[[
+vim.o.background = "dark"
+vim.g.tokyonight_style = "storm"
+vim.g.tokyonight_transparent = 0
 lvim.colorscheme = "tokyonight"
-vim.g.tokyonight_style = "day"
-vim.g.tokyonight_transparent = 1
 ]]
-
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -74,7 +81,7 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
-lvim.builtin.terminal.direction = 'horizontal'
+lvim.builtin.terminal.direction = 'float' -- "horizontal"
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 1
 
@@ -96,6 +103,23 @@ lvim.builtin.treesitter.ensure_installed = {
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
+-- Signature settings
+local sigconf = {
+  toggle_key = "<C-x>",
+  hint_prefix = "=>> "
+}
+
+-- Trouble keymappings
+lvim.builtin.which_key.mappings["t"] = {
+  name = "Diagnostics",
+  t = { "<cmd>TroubleToggle<cr>", "trouble" },
+  w = { "<cmd>TroubleToggle lsp_workspace_diagnostics<cr>", "workspace" },
+  d = { "<cmd>TroubleToggle lsp_document_diagnostics<cr>", "document" },
+  q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
+  l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
+  r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
+}
+
 -- generic LSP settings
 
 -- ---@usage disable automatic installation of servers
@@ -108,6 +132,10 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- ---@usage setup a server -- see: https://www.lunarvim.org/languages/#overriding-the-default-configuration
 -- local opts = {} -- check the lspconfig documentation for a list of all possible options
 -- require("lvim.lsp.manager").setup("pylsp", opts)
+
+require("lvim.lsp.manager").setup("pyright", {
+  on_attach = require("lsp_signature").on_attach(sigconf),
+})
 
 -- you can set a custom on_attach function that will be used for all the language servers
 -- See <https://github.com/neovim/nvim-lspconfig#keybindings-and-completion>
@@ -157,24 +185,44 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- }
 
 -- Additional Plugins
--- lvim.plugins = {
---     {"folke/tokyonight.nvim"},
---     {
---       "folke/trouble.nvim",
---       cmd = "TroubleToggle",
---     },
--- }
 lvim.plugins = {
   {"sainnhe/gruvbox-material"},
   {"folke/tokyonight.nvim"},
   {
     "ray-x/lsp_signature.nvim",
-    event = "BufRead",
+    event = "BufReadPre",
     config = function()
-      require "lsp_signature".setup()
+      require("lsp_signature").setup(sigconf)
     end
   },
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
+  {
+    "turbio/bracey.vim",
+    cmd = {"Bracey", "BracyStop", "BraceyReload", "BraceyEval"},
+    run = "npm install --prefix server",
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    run = "cd app && npm install",
+    ft = "markdown",
+    config = function()
+      vim.g.mkdp_auto_start = 1
+    end,
+  },
+  {
+    "felipec/vim-sanegx",
+    event = "BufRead",
+  },
+  {
+    "tpope/vim-surround",
+    keys = {"c", "d", "y"}
+  },
 }
+--[[
+]]
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 lvim.autocommands.custom_groups = {
